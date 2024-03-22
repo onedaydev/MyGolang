@@ -1,4 +1,4 @@
-module todo
+module github.com/onedaydev/MyGolang/todo
 
 go 1.22.1
 
