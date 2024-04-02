@@ -1,1 +1,1 @@
-# MY_Golang
+# MyGolang
