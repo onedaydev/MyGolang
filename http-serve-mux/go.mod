@@ -1,3 +1,3 @@
-module github.com/onedaydev/golang/http-serve-mux
+module github.com/onedaydev/mygolang/http-serve-mux
 
 go 1.22.1

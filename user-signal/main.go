@@ -18,7 +18,7 @@ func createContextWithTimeout(d time.Duration) (context.Context, context.CancelF
 
 func setupSignalHandler(w io.Writer, cancelFunc context.CancelFunc) {
 	c := make(chan os.Signal, 1)
-	signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
+	signal.Notify(c, syscall.SIGINT, syscall.SIGTERM) // 시그널을 받을 채널(c), 캐치하고자 하는 시그널 목록(SIGINT, SIGTERM)
 	go func() {
 		s := <-c
 		fmt.Fprintf(w, "Got signal: %v\n", s)
