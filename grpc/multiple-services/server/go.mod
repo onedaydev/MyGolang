@@ -2,7 +2,11 @@ module github.com/onedaydev/mygolang/grpc/multiple-services/server
 
 go 1.22.1
 
-require github.com/onedaydev/mygolang/grpc/multiple-services/service v0.0.0
+require (
+	github.com/onedaydev/mygolang/grpc/multiple-services/service v0.0.0
+	github.com/onedaydev/mygolang/grpc/user-service/service v0.0.0-20240423123602-638f6bd2a756
+	google.golang.org/grpc v1.37.0
+)
 
 require (
 	github.com/golang/protobuf v1.4.2 // indirect
@@ -10,7 +14,6 @@ require (
 	golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a // indirect
 	golang.org/x/text v0.3.0 // indirect
 	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013 // indirect
-	google.golang.org/grpc v1.37.0 // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
 )
 

@@ -4,16 +4,17 @@ import (
 	"context"
 	"errors"
 	"log"
+	"net"
+	"os"
 	"strings"
 
 	svc "github.com/onedaydev/mygolang/grpc/multiple-services/service"
-	users "github.com/onedaydev/mygolang/grpc/user-service/service"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
 
 type userService struct {
-	svc.UnimplementedUserServer
+	svc.UnimplementedUsersServer
 }
 
 type repoService struct {
@@ -22,8 +23,8 @@ type repoService struct {
 
 func (s *userService) GetUser(
 	ctx context.Context,
-	in *users.UserGetRequest,
-) (*users.UserGetReply, error) {
+	in *svc.UserGetRequest,
+) (*svc.UserGetReply, error) {
 	log.Printf("received request for user with Email: %s Id: %s\n",
 		in.Email,
 		in.Id,
@@ -32,17 +33,58 @@ func (s *userService) GetUser(
 	if len(components) != 2 {
 		return nil, errors.New("invalid email address")
 	}
-	u := users.User{
+	u := svc.User{
 		Id:        in.Id,
 		FirstName: components[0],
 		LastName:  components[1],
 		Age:       29,
 	}
-	return &users.UserGetReply{User: &u}, nil
+	return &svc.UserGetReply{User: &u}, nil
+}
+
+func (s *repoService) GetRepos(
+	ctx context.Context,
+	in *svc.RepoGetRequest,
+) (*svc.RepoGetReply, error) {
+	log.Printf(
+		"Received request for repo with CreatedId: %s Id: %s\n",
+		in.CreatorId,
+		in.Id,
+	)
+	repo := svc.Repository{
+		Id:    in.Id,
+		Name:  "test repo",
+		Url:   "https://git.example.com/test/repo",
+		Owner: &svc.User{Id: in.CreatorId, FirstName: "John"},
+	}
+
+	r := svc.RepoGetReply{
+		Repo: []*svc.Repository{&repo},
+	}
+	return &r, nil
 }
 
 func registerServices(s *grpc.Server) {
 	svc.RegisterUsersServer(s, &userService{})
 	svc.RegisterRepoServer(s, &repoService{})
 	reflection.Register(s)
+}
+
+func startServer(s *grpc.Server, l net.Listener) error {
+	return s.Serve(l)
+}
+
+func main() {
+	listenAddr := os.Getenv("LISTEN_ADDR")
+	if len(listenAddr) == 0 {
+		listenAddr = ":50051"
+	}
+
+	lis, err := net.Listen("tcp", listenAddr)
+	if err != nil {
+		log.Fatal(err)
+	}
+	s := grpc.NewServer()
+	registerServices(s)
+	log.Fatal(startServer(s, lis))
 }

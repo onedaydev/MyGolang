@@ -7,7 +7,6 @@
 package service
 
 import (
-	service "github.com/onedaydev/mygolang/grpc/user-service/service"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -26,8 +25,8 @@ type RepoGetRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id        string `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	CreatorId string `protobuf:"bytes,1,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
+	Id        string `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 }
 
 func (x *RepoGetRequest) Reset() {
@@ -62,16 +61,16 @@ func (*RepoGetRequest) Descriptor() ([]byte, []int) {
 	return file_repositories_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *RepoGetRequest) GetId() string {
+func (x *RepoGetRequest) GetCreatorId() string {
 	if x != nil {
-		return x.Id
+		return x.CreatorId
 	}
 	return ""
 }
 
-func (x *RepoGetRequest) GetCreatorId() string {
+func (x *RepoGetRequest) GetId() string {
 	if x != nil {
-		return x.CreatorId
+		return x.Id
 	}
 	return ""
 }
@@ -81,10 +80,10 @@ type Repository struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id    string        `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name  string        `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Url   string        `protobuf:"bytes,3,opt,name=url,proto3" json:"url,omitempty"`
-	Owner *service.User `protobuf:"bytes,4,opt,name=owner,proto3" json:"owner,omitempty"`
+	Id    string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name  string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Url   string `protobuf:"bytes,3,opt,name=url,proto3" json:"url,omitempty"`
+	Owner *User  `protobuf:"bytes,4,opt,name=owner,proto3" json:"owner,omitempty"`
 }
 
 func (x *Repository) Reset() {
@@ -140,7 +139,7 @@ func (x *Repository) GetUrl() string {
 	return ""
 }
 
-func (x *Repository) GetOwner() *service.User {
+func (x *Repository) GetOwner() *User {
 	if x != nil {
 		return x.Owner
 	}
@@ -152,7 +151,7 @@ type RepoGetReply struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Repo []*Repository `protobuf:"bytes,1,rep,name=repo,proto3" json:"repo,omitempty"`
+	Repo []*Repository `protobuf:"bytes,1,rep,name=repo,proto3" json:"repo,omitempty"` // repeated : 해당 필드의 인스턴스를 포함할 수도 아닐 수도 있다.
 }
 
 func (x *RepoGetReply) Reset() {
@@ -200,10 +199,10 @@ var file_repositories_proto_rawDesc = []byte{
 	0x0a, 0x12, 0x72, 0x65, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x65, 0x73, 0x2e, 0x70,
 	0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x0b, 0x75, 0x73, 0x65, 0x72, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74,
 	0x6f, 0x22, 0x3f, 0x0a, 0x0e, 0x52, 0x65, 0x70, 0x6f, 0x47, 0x65, 0x74, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x02, 0x69, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x5f, 0x69,
+	0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72, 0x5f, 0x69,
 	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f, 0x72,
-	0x49, 0x64, 0x22, 0x5f, 0x0a, 0x0a, 0x52, 0x65, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x6f, 0x72, 0x79,
+	0x49, 0x64, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02,
+	0x69, 0x64, 0x22, 0x5f, 0x0a, 0x0a, 0x52, 0x65, 0x70, 0x6f, 0x73, 0x69, 0x74, 0x6f, 0x72, 0x79,
 	0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64,
 	0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
 	0x6e, 0x61, 0x6d, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x75, 0x72, 0x6c, 0x18, 0x03, 0x20, 0x01, 0x28,
@@ -240,7 +239,7 @@ var file_repositories_proto_goTypes = []interface{}{
 	(*RepoGetRequest)(nil), // 0: RepoGetRequest
 	(*Repository)(nil),     // 1: Repository
 	(*RepoGetReply)(nil),   // 2: RepoGetReply
-	(*service.User)(nil),   // 3: User
+	(*User)(nil),           // 3: User
 }
 var file_repositories_proto_depIdxs = []int32{
 	3, // 0: Repository.owner:type_name -> User
@@ -259,6 +258,7 @@ func file_repositories_proto_init() {
 	if File_repositories_proto != nil {
 		return
 	}
+	file_users_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_repositories_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*RepoGetRequest); i {
